@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Neuronio {
+public:
+    virtual float predict(const vector<float>& entradas) = 0; // Método abstrato
+    virtual ~Neuronio() {}
+};
+
+class NeuronioReLU : public Neuronio {
+private:
+    vector<float> pesos;
+    float bias;
+
+public:
+    NeuronioReLU(const vector<float>& pesos, float bias) : pesos(pesos), bias(bias) {}
+
+    float predict(const vector<float>& entradas) override {
+        float somatorio = 0.0;
+        for (size_t i = 0; i < entradas.size(); ++i) {
+            somatorio += entradas[i] * pesos[i];
+        }
+        somatorio += bias;
+        return max(0.0f, somatorio); // Aplica a função ReLU
+    }
+};
+
+int main() {
+    // caso 1
+    vector<float> entradas1 = {0.3, 2.0};
+    vector<float> pesos1 = {0.2, 0.4};
+    NeuronioReLU neuronio1(pesos1, -1.5);
+    cout << "Saída Caso 1: " << neuronio1.predict(entradas1) << endl;
+
+    // caso 2
+    vector<float> entradas2 = {0.3, 2.0};
+    vector<float> pesos2 = {0.2, 0.4};
+    NeuronioReLU neuronio2(pesos2, -0.5);
+    cout << "Saída Caso 2: " << neuronio2.predict(entradas2) << endl;
+
+    // caso 3
+    vector<float> entradas3 = {0.5, 1.5};
+    vector<float> pesos3 = {0.3, 0.7};
+    NeuronioReLU neuronio3(pesos3, -0.2);
+    cout << "Saída Caso 3: " << neuronio3.predict(entradas3) << endl;
+
+    // caso 4
+    vector<float> entradas4 = {0.5, 1.0};
+    vector<float> pesos4 = {0.6, 0.3};
+    NeuronioReLU neuronio4(pesos4, 0.1);
+    cout << "Saída Caso 4: " << neuronio4.predict(entradas4) << endl;
+
+    return 0;
+}
